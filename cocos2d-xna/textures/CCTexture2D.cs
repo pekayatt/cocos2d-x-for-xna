@@ -200,7 +200,7 @@ namespace cocos2d
             app.graphics.GraphicsDevice.Clear(new Color(0, 0, 0, 0));
 
             app.spriteBatch.Begin();
-            app.spriteBatch.DrawString(font, text, new Vector2(0, 0), Color.YellowGreen, 0.0f, origin, scale, SpriteEffects.None, 0.0f);
+            app.spriteBatch.DrawString(font, text, new Vector2(0, 0), Color.White, 0.0f, origin, scale, SpriteEffects.None, 0.0f);
             app.spriteBatch.End();
 
             app.graphics.GraphicsDevice.SetRenderTarget(null);

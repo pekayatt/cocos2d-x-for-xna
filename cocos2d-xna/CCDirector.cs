@@ -136,7 +136,6 @@ namespace cocos2d
             if (!m_bPaused)
             {
                 CCScheduler.sharedScheduler().tick((float)gameTime.ElapsedGameTime.TotalSeconds);
-                m_fDeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
 
             //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -263,6 +262,7 @@ namespace cocos2d
 
             if (c == 0)
             {
+                CCApplication.sharedApplication().Game.Exit();
                 end();
             }
             else
@@ -270,6 +270,15 @@ namespace cocos2d
                 m_bSendCleanupToScene = true;
                 m_pNextScene = m_pobScenesStack[c - 1];
             }
+        }
+
+        public CCScene getLastScene()
+        {
+            if (m_pobScenesStack.Count > 1)
+                return m_pobScenesStack[m_pobScenesStack.Count - 2];
+            else
+                return null;
+        
         }
 
         /// <summary>
@@ -369,25 +378,20 @@ namespace cocos2d
         /** shows the FPS in the screen */
         protected void showFPS()
         {
-            m_uFrames++;
-            m_fAccumDt += m_fDeltaTime;
+            //m_uFrames++;
+            //m_fAccumDt += m_fDeltaTime;
 
-            if (m_fAccumDt > ccMacros.CC_DIRECTOR_FPS_INTERVAL)
-            {
-                m_fFrameRate = m_uFrames / m_fAccumDt;
-                m_uFrames = 0;
-                m_fAccumDt = 0;
+            //if (m_fAccumDt > CC_DIRECTOR_FPS_INTERVAL)
+            //{
+            //    m_fFrameRate = m_uFrames / m_fAccumDt;
+            //    m_uFrames = 0;
+            //    m_fAccumDt = 0;
 
-                m_pszFPS = string.Format("{0}", m_fFrameRate);
-            }
+            //    sprintf(m_pszFPS, "%.1f", m_fFrameRate);
+            //    m_pFPSLabel->setString(m_pszFPS);
+            //}
 
-            SpriteFont font = CCApplication.sharedApplication().content.Load<SpriteFont>(@"fonts/Arial");
-            CCApplication.sharedApplication().spriteBatch.Begin();
-            CCApplication.sharedApplication().spriteBatch.DrawString(font, 
-                m_pszFPS, 
-                new Vector2(0, CCApplication.sharedApplication().getSize().height - 50), 
-                new Color(0, 255, 255));
-            CCApplication.sharedApplication().spriteBatch.End();
+            //m_pFPSLabel->draw();
         }
 #else
         protected void showFPS()
@@ -405,6 +409,9 @@ namespace cocos2d
         bool m_bDisplayFPS;
         float m_fAccumDt;
         float m_fFrameRate;
+#if	CC_DIRECTOR_FAST_FPS
+        //CCLabelTTF *m_pFPSLabel;
+#endif
 
         /* is the running scene paused */
         bool m_bPaused;
@@ -412,8 +419,6 @@ namespace cocos2d
         /* How many frames were called since the director started */
         uint m_uTotalFrames;
         uint m_uFrames;
-
-        float m_fDeltaTime;
 
         /* The running scene */
         CCScene m_pRunningScene;
@@ -526,12 +531,9 @@ namespace cocos2d
                 switch (value)
                 {
                     case ccDirectorProjection.kCCDirectorProjection2D:
-                        app.viewMatrix = Matrix.CreateLookAt(new Vector3(size.width / 2.0f, size.height / 2.0f, 5.0f),
-                            new Vector3(size.width / 2.0f, size.height / 2.0f, 0), 
-                            Vector3.Up);
-                        app.projectionMatrix = Matrix.CreateOrthographicOffCenter(-size.width / 2.0f, 
-                            size.width / 2.0f, -size.height / 2.0f, size.height / 2.0f, -1024.0f, 1024.0f);
-                        app.worldMatrix = Matrix.Identity;
+                        app.viewMatrix = Matrix.CreateLookAt(new Vector3(0.0f, 0.0f, 5.0f), Vector3.Zero, Vector3.Up);
+                        app.projectionMatrix = Matrix.CreateOrthographicOffCenter(0, size.width, 0, size.height, -1024.0f, 1024.0f);
+                        app.worldMatrix = Matrix.CreateTranslation(0, 0, 0);
 
                         break;
 

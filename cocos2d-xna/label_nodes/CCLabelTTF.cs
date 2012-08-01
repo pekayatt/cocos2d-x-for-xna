@@ -156,7 +156,7 @@ namespace cocos2d
         }
 
         protected SpriteFont spriteFont;
-        protected CCSize m_tDimensions = new CCSize();
+        protected CCSize m_tDimensions;
         protected CCTextAlignment m_eAlignment;
         protected string m_pFontName;
         protected float m_fFontSize;

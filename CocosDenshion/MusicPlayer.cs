@@ -55,10 +55,11 @@ namespace CocosDenshion
 
         public void Close()
         {
-            if (IsPlaying())
-            {
-                Stop();
-            }
+            //Game would not be approved if stop the mediaPlayer music when quitting.
+            //if (IsPlaying())
+            //{
+            //    Stop();
+            //}
 
             if (m_music != null)
             {

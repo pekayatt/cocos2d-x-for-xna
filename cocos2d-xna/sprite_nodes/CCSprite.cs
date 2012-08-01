@@ -226,7 +226,7 @@ namespace cocos2d
         }
 
         /** conforms to CCTextureProtocol protocol */
-        private ccBlendFunc m_sBlendFunc = new ccBlendFunc();
+        private ccBlendFunc m_sBlendFunc;
         public ccBlendFunc BlendFunc
         {
             get { return m_sBlendFunc; }
@@ -464,6 +464,8 @@ namespace cocos2d
             CCApplication app = CCApplication.sharedApplication();
             CCSize size = CCDirector.sharedDirector().getWinSize();
 
+            app.GraphicsDevice.BlendState = BlendState.AlphaBlend;
+
             bool newBlend = m_sBlendFunc.src != ccMacros.CC_BLEND_SRC || m_sBlendFunc.dst != ccMacros.CC_BLEND_DST;
             BlendState origin = app.GraphicsDevice.BlendState;
             if (newBlend)
@@ -471,7 +473,7 @@ namespace cocos2d
                 BlendState bs = new BlendState();
 
                 bs.ColorSourceBlend = OGLES.GetXNABlend(m_sBlendFunc.src);
-                bs.AlphaSourceBlend = OGLES.GetXNABlend(m_sBlendFunc.src); 
+                bs.AlphaSourceBlend = OGLES.GetXNABlend(m_sBlendFunc.src); ;
                 bs.ColorDestinationBlend = OGLES.GetXNABlend(m_sBlendFunc.dst);
                 bs.AlphaDestinationBlend = OGLES.GetXNABlend(m_sBlendFunc.dst);
 

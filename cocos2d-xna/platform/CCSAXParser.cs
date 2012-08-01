@@ -35,6 +35,11 @@ using cocos2d.Framework;
 using System.IO;
 using System.Xml.Linq;
 
+
+// Put the using statements at the beginning of the code module
+using System.Threading;
+using System.Globalization;
+
 namespace cocos2d
 {
     public class CCSAXParser
@@ -54,6 +59,9 @@ namespace cocos2d
 
         public bool parse(string pszFile)
         {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
+
             CCContent data = CCApplication.sharedApplication().content.Load<CCContent>(pszFile);
             string str = data.Content;
             if (data == null)
@@ -62,9 +70,7 @@ namespace cocos2d
             }
 
             TextReader textReader = new StringReader(str);
-            XmlReaderSettings setting = new XmlReaderSettings();
-            setting.DtdProcessing = DtdProcessing.Ignore;
-            XmlReader xmlReader = XmlReader.Create(textReader, setting);
+            XmlReader xmlReader = XmlReader.Create(textReader);
             int dataindex = 0;
 
             int Width = 0;
